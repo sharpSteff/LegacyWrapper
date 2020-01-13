@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.ExceptionServices;
 using LegacyWrapper.Handler;
 using PommaLabs.Thrower;
@@ -17,9 +18,27 @@ namespace LegacyWrapper32
         /// </param>
         static void Main(string[] args)
         {
-            //Debugger.Launch();
-            ICallRequestHandler requestHandler = CallRequestHandlerFactory.GetInstance(args);
-            requestHandler.Call();
+            try
+            {
+                //Debugger.Launch();
+
+                ICallRequestHandler requestHandler = CallRequestHandlerFactory.GetInstance(args);
+                requestHandler.Call();
+            }
+            catch (IOException ex1)
+            {
+                if (ex1.Message != "Pipe is broken.")
+                {
+                    // Fehlermeldung ignorieren
+                    //Debugger.Launch();
+                }
+            }
+            catch (System.Exception)
+            {
+                Debugger.Launch();
+                throw;
+            }
+            
         }   
     }
 }

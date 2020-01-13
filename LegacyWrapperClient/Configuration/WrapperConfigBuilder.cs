@@ -39,6 +39,12 @@ namespace LegacyWrapperClient.Configuration
             return this;
         }
 
+        public WrapperConfigBuilder Timeout(int timeout)
+        {
+            _configuration.Timeout = timeout;
+            return this;
+        }
+
         /// <summary>
         /// Returns all configured information as an instance of IWrapperConfig.
         /// </summary>

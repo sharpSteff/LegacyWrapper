@@ -10,5 +10,7 @@ namespace LegacyWrapperClient.Configuration
     internal class WrapperConfig : IWrapperConfig
     {
         public TargetArchitecture TargetArchitecture { get; set; }
+
+        public int Timeout { get; set; }
     }
 }

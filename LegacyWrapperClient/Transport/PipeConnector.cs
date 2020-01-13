@@ -36,6 +36,7 @@ namespace LegacyWrapperClient.Transport
         private readonly IWrapperProcessStarter _wrapperProcessStarter;
         private readonly PipeStreamFactory _pipeStreamFactory;
         private readonly PipeToken _pipeToken;
+        private readonly int _timeout;
 
         /// <summary>
         /// Creates a new WrapperClient instance.
@@ -44,7 +45,8 @@ namespace LegacyWrapperClient.Transport
         /// <param name="wrapperProcessStarter">WrapperProcessStarter instance for invoking the appropriate wrapper executable.</param>
         /// <param name="pipeStreamFactory">A factory instance to create a new NamedPipeClientStream.</param>
         /// <param name="pipeToken">PipeToken instance for creating pipe connections.</param>
-        public PipeConnector(IFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken)
+        /// <param name="timeout">timeout for pipe connect</param>
+        public PipeConnector(IFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken, int timeout)
         {
             Raise.ArgumentNullException.IfIsNull(formatter, nameof(formatter));
             Raise.ArgumentNullException.IfIsNull(wrapperProcessStarter, nameof(wrapperProcessStarter));
@@ -55,6 +57,7 @@ namespace LegacyWrapperClient.Transport
             _wrapperProcessStarter = wrapperProcessStarter;
             _pipeStreamFactory = pipeStreamFactory;
             _pipeToken = pipeToken;
+            _timeout = timeout;
 
             _wrapperProcessStarter.StartWrapperProcess();
             OpenPipe();
@@ -79,7 +82,7 @@ namespace LegacyWrapperClient.Transport
 
         private void OpenPipe()
         {
-            _pipe = _pipeStreamFactory.GetConnectedPipeStream(_pipeToken);
+            _pipe = _pipeStreamFactory.GetConnectedPipeStream(_pipeToken, _timeout);
         }
 
         private void ClosePipe()

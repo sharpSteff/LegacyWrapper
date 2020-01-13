@@ -22,7 +22,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeClientStreamFactoryMock = new Mock<PipeStreamFactory>();
 
             pipeClientStreamFactoryMock
-                .Setup(mock => mock.GetConnectedPipeStream(It.IsAny<PipeToken>()))
+                .Setup(mock => mock.GetConnectedPipeStream(It.IsAny<PipeToken>(), 0))
                 .Returns(pipeStreamMock.Object);
 
             return pipeClientStreamFactoryMock;
@@ -36,12 +36,12 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
             PipeToken pipeToken = new PipeToken(Guid.NewGuid().ToString());
-            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken);
+            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken, 0);
             CallData callDataToSend = new CallData();
 
             pipeConnector.SendCallRequest(callDataToSend);
 
-            pipeStreamFactoryMock.Verify(mock => mock.GetConnectedPipeStream(It.Is<PipeToken>(actual => Equals(actual, pipeToken))), Times.Once);
+            pipeStreamFactoryMock.Verify(mock => mock.GetConnectedPipeStream(It.Is<PipeToken>(actual => Equals(actual, pipeToken)), 0), Times.Once);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
             PipeToken pipeToken = new PipeToken(Guid.NewGuid().ToString());
-            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken);
+            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken, 0);
             CallData callDataToSend = new CallData();
 
             pipeConnector.SendCallRequest(callDataToSend);
@@ -73,7 +73,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
             PipeToken pipeToken = new PipeToken(Guid.NewGuid().ToString());
-            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken);
+            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken, 0);
 
             CallResult actualCallResult = pipeConnector.ReceiveCallResponse();
 
@@ -95,7 +95,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
             PipeToken pipeToken = new PipeToken(Guid.NewGuid().ToString());
-            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken);
+            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken, 0);
 
             pipeConnector.ReceiveCallResponse();
 
@@ -115,7 +115,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
             PipeToken pipeToken = new PipeToken(Guid.NewGuid().ToString());
-            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken);
+            IPipeConnector pipeConnector = new PipeConnector(formatterMock.Object, wrapperProcessStarterMock.Object, pipeStreamFactoryMock.Object, pipeToken, 0);
 
             pipeConnector.Dispose();
 

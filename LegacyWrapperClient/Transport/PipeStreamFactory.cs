@@ -13,10 +13,10 @@ namespace LegacyWrapperClient.Transport
     {
         private const string LocalPipeUrl = ".";
 
-        public virtual PipeStream GetConnectedPipeStream(PipeToken pipeToken)
+        public virtual PipeStream GetConnectedPipeStream(PipeToken pipeToken, int timeout)
         {
             NamedPipeClientStream pipe = new NamedPipeClientStream(LocalPipeUrl, pipeToken.Token, PipeDirection.InOut);
-            pipe.Connect();
+            pipe.Connect(timeout);
             pipe.ReadMode = PipeTransmissionMode.Message;
 
             return pipe;

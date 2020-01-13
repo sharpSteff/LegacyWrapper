@@ -12,5 +12,7 @@ namespace LegacyWrapperClient.Configuration
         /// The architecture of the called DLL (X86 or AMD64).
         /// </summary>
         TargetArchitecture TargetArchitecture { get; }
+
+        int Timeout { get; }
     }
 }
