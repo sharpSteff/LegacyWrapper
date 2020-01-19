@@ -61,7 +61,6 @@ namespace LegacyWrapperClient.Client
             CreateToken();
 
             InjectionKernel.Rebind<IWrapperConfig>().ToConstant(configuration);
-            InjectionKernel.Rebind<int>().ToConstant(configuration.Timeout);
             InjectionKernel.Rebind<Type>().ToConstant(typeof(TFunctions));
 
             return CreateProxy();

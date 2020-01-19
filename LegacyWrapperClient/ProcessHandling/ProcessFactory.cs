@@ -10,13 +10,16 @@ namespace LegacyWrapperClient.ProcessHandling
 {
     internal class ProcessFactory : IProcessFactory
     {
-        public virtual MockableProcess GetProcess(string executableName, string args)
+        public virtual MockableProcess GetProcess(string executableName, string args, string workingDirectory = "")
         {
             Raise.ArgumentNullException.IfIsNull(executableName, nameof(executableName));
             Raise.ArgumentNullException.IfIsNull(args, nameof(args));
 
             MockableProcess process = new MockableProcess();
-            process.StartInfo = new ProcessStartInfo(executableName, args);
+            process.StartInfo = new ProcessStartInfo(executableName, args)
+            {
+                WorkingDirectory = workingDirectory
+            };
 
             return process;
         }

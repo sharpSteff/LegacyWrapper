@@ -1,27 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Dynamic;
-using System.IO;
 using System.IO.Pipes;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using LegacyWrapper.Common.Attributes;
 using LegacyWrapper.Common.Serialization;
 using LegacyWrapper.Common.Token;
-using LegacyWrapper.ErrorHandling;
-using LegacyWrapperClient.Architecture;
-using LegacyWrapperClient.Client;
 using LegacyWrapperClient.Configuration;
 using LegacyWrapperClient.ProcessHandling;
-using LegacyWrapperClient.Token;
 using PommaLabs.Thrower;
 
 namespace LegacyWrapperClient.Transport
@@ -36,7 +19,6 @@ namespace LegacyWrapperClient.Transport
         private readonly IWrapperProcessStarter _wrapperProcessStarter;
         private readonly PipeStreamFactory _pipeStreamFactory;
         private readonly PipeToken _pipeToken;
-        private readonly int _timeout;
 
         /// <summary>
         /// Creates a new WrapperClient instance.
@@ -45,8 +27,8 @@ namespace LegacyWrapperClient.Transport
         /// <param name="wrapperProcessStarter">WrapperProcessStarter instance for invoking the appropriate wrapper executable.</param>
         /// <param name="pipeStreamFactory">A factory instance to create a new NamedPipeClientStream.</param>
         /// <param name="pipeToken">PipeToken instance for creating pipe connections.</param>
-        /// <param name="timeout">timeout for pipe connect</param>
-        public PipeConnector(IFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken, int timeout)
+        /// <param name="wrapperConfig">the wrapperconfig</param>
+        public PipeConnector(IFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken, IWrapperConfig wrapperConfig)
         {
             Raise.ArgumentNullException.IfIsNull(formatter, nameof(formatter));
             Raise.ArgumentNullException.IfIsNull(wrapperProcessStarter, nameof(wrapperProcessStarter));
@@ -57,10 +39,9 @@ namespace LegacyWrapperClient.Transport
             _wrapperProcessStarter = wrapperProcessStarter;
             _pipeStreamFactory = pipeStreamFactory;
             _pipeToken = pipeToken;
-            _timeout = timeout;
 
             _wrapperProcessStarter.StartWrapperProcess();
-            OpenPipe();
+            OpenPipe(wrapperConfig.Timeout);
         }
 
         public void SendCallRequest(CallData callData)
@@ -80,9 +61,9 @@ namespace LegacyWrapperClient.Transport
             return callResult;
         }
 
-        private void OpenPipe()
+        private void OpenPipe(int timeout)
         {
-            _pipe = _pipeStreamFactory.GetConnectedPipeStream(_pipeToken, _timeout);
+            _pipe = _pipeStreamFactory.GetConnectedPipeStream(_pipeToken, timeout);
         }
 
         private void ClosePipe()

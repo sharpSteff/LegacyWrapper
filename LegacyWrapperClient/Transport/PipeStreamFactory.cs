@@ -15,6 +15,11 @@ namespace LegacyWrapperClient.Transport
 
         public virtual PipeStream GetConnectedPipeStream(PipeToken pipeToken, int timeout)
         {
+            if (timeout == 0)
+            {
+                timeout = System.Threading.Timeout.Infinite;
+            }
+
             NamedPipeClientStream pipe = new NamedPipeClientStream(LocalPipeUrl, pipeToken.Token, PipeDirection.InOut);
             pipe.Connect(timeout);
             pipe.ReadMode = PipeTransmissionMode.Message;

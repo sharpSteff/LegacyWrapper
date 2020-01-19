@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LegacyWrapperClient.Architecture;
+﻿using LegacyWrapperClient.Architecture;
 
 namespace LegacyWrapperClient.Configuration
 {
     internal class WrapperConfig : IWrapperConfig
     {
+        internal WrapperConfig()
+        {
+            Timeout = System.Threading.Timeout.Infinite;
+        }
+
         public TargetArchitecture TargetArchitecture { get; set; }
 
         public int Timeout { get; set; }
+
+        public string WorkingDirectory { get; set; }
     }
 }

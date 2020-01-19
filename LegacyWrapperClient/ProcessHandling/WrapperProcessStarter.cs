@@ -19,6 +19,7 @@ namespace LegacyWrapperClient.ProcessHandling
         private readonly IWrapperExecutableNameProvider _wrapperExecutableNameProvider;
         private readonly PipeToken _pipeToken;
         private readonly IProcessFactory _processFactory;
+        private readonly IWrapperConfig _wrapperConfiguration;
 
         /// <summary>
         /// Creates a new WrapperProcessStarter instance.
@@ -26,7 +27,7 @@ namespace LegacyWrapperClient.ProcessHandling
         /// <param name="wrapperExecutableNameProvider">Provides the name for the wrapper executable to start.</param>
         /// <param name="pipeToken">PipeToken instance for creating pipe connections.</param>
         /// <param name="processFactory">IProcessFactory instance for creating a new wrapper process</param>
-        public WrapperProcessStarter(IWrapperExecutableNameProvider wrapperExecutableNameProvider, PipeToken pipeToken, IProcessFactory processFactory)
+        public WrapperProcessStarter(IWrapperExecutableNameProvider wrapperExecutableNameProvider, PipeToken pipeToken, IProcessFactory processFactory, IWrapperConfig configuration)
         {
             Raise.ArgumentNullException.IfIsNull(wrapperExecutableNameProvider, nameof(wrapperExecutableNameProvider));
             Raise.ArgumentNullException.IfIsNull(pipeToken, nameof(pipeToken));
@@ -35,13 +36,14 @@ namespace LegacyWrapperClient.ProcessHandling
             _wrapperExecutableNameProvider = wrapperExecutableNameProvider;
             _pipeToken = pipeToken;
             _processFactory = processFactory;
+            _wrapperConfiguration = configuration;
         }
-
         public void StartWrapperProcess()
         {
             string wrapperName = _wrapperExecutableNameProvider.GetWrapperExecutableName();
 
-            _wrapperProcess = _processFactory.GetProcess(wrapperName, _pipeToken.Token);
+            _wrapperProcess = _processFactory.GetProcess(wrapperName, _pipeToken.Token, _wrapperConfiguration.WorkingDirectory);
+           
             _wrapperProcess.Start();
         }
 

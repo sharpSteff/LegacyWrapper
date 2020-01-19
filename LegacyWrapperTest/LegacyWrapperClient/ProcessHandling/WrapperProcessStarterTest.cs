@@ -28,7 +28,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.ProcessHandling
 
             _processFactoryMock = new Mock<IProcessFactory>();
             _processFactoryMock.Setup(mock => mock
-                               .GetProcess(It.IsAny<string>(), It.IsAny<string>()))
+                               .GetProcess(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                                .Returns(_processMock.Object);
 
             _nameProviderMock = new Mock<IWrapperExecutableNameProvider>();
@@ -40,11 +40,11 @@ namespace LegacyWrapperTest.LegacyWrapperClient.ProcessHandling
         [TestMethod]
         public void TestStartsProcess()
         {
-            WrapperProcessStarter processStarter = new WrapperProcessStarter(_nameProviderMock.Object, MockToken, _processFactoryMock.Object);
+            WrapperProcessStarter processStarter = new WrapperProcessStarter(_nameProviderMock.Object, MockToken, _processFactoryMock.Object, new WrapperConfig());
 
             processStarter.StartWrapperProcess();
 
-            _processFactoryMock.Verify(mock => mock.GetProcess(It.Is<string>(actual => actual == MockProcessName), It.Is<string>(actual => actual == MockToken.Token)), Times.Once);
+            _processFactoryMock.Verify(mock => mock.GetProcess(It.Is<string>(actual => actual == MockProcessName), It.Is<string>(actual => actual == MockToken.Token), It.IsAny<string>()), Times.Once);
             _processMock.Verify(mock => mock.Start(), Times.Once);
         }
     }

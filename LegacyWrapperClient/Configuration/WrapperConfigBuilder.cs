@@ -39,9 +39,25 @@ namespace LegacyWrapperClient.Configuration
             return this;
         }
 
+        /// <summary>
+        /// Sets the timeout of the host process in mille seconds (0 is unlimited)
+        /// </summary>
+        /// <param name="timeout">the timeout in milliseconds</param>
+        /// <returns>Returns the same instance of WrapperConfigBuilder</returns>
         public WrapperConfigBuilder Timeout(int timeout)
         {
             _configuration.Timeout = timeout;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the working directory, where the host process executable can be found. Default is the main executable path
+        /// </summary>
+        /// <param name="workingdir">the working directory</param>
+        /// <returns>Returns the same instance of WrapperConfigBuilder.</returns>
+        public WrapperConfigBuilder WirkingDirectory(string workingdir)
+        {
+            _configuration.WorkingDirectory = workingdir;
             return this;
         }
 

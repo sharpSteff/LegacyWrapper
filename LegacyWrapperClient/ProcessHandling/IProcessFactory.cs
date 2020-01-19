@@ -9,6 +9,6 @@ namespace LegacyWrapperClient.ProcessHandling
 {
     interface IProcessFactory
     {
-        MockableProcess GetProcess(string executableName, string args);
+        MockableProcess GetProcess(string executableName, string args, string workingDirectory);
     }
 }

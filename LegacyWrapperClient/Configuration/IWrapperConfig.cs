@@ -13,6 +13,11 @@ namespace LegacyWrapperClient.Configuration
         /// </summary>
         TargetArchitecture TargetArchitecture { get; }
 
+        /// <summary>
+        /// Gets the time in milliseconds where a host process can be inactive before closing
+        /// </summary>
         int Timeout { get; }
+
+        string WorkingDirectory { get; }
     }
 }
