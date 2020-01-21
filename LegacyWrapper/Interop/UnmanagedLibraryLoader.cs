@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -23,7 +24,6 @@ namespace LegacyWrapper.Interop
             MethodInfo methodInfo = dllHandle.GetMethod(callData.ProcedureName);
 
             Raise<LegacyWrapperException>.If(methodInfo == null, $"Requested method {callData.ProcedureName} was not found in unmanaged DLL.");
-
             object result = methodInfo.Invoke(null, callData.Parameters);
 
             return new CallResult()

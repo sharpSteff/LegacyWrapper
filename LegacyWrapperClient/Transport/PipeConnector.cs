@@ -15,7 +15,7 @@ namespace LegacyWrapperClient.Transport
 
         private PipeStream _pipe;
 
-        private readonly IFormatter _formatter;
+        private readonly ICallFormatter _formatter;
         private readonly IWrapperProcessStarter _wrapperProcessStarter;
         private readonly PipeStreamFactory _pipeStreamFactory;
         private readonly PipeToken _pipeToken;
@@ -28,7 +28,7 @@ namespace LegacyWrapperClient.Transport
         /// <param name="pipeStreamFactory">A factory instance to create a new NamedPipeClientStream.</param>
         /// <param name="pipeToken">PipeToken instance for creating pipe connections.</param>
         /// <param name="wrapperConfig">the wrapperconfig</param>
-        public PipeConnector(IFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken, IWrapperConfig wrapperConfig)
+        public PipeConnector(ICallFormatter formatter, IWrapperProcessStarter wrapperProcessStarter, PipeStreamFactory pipeStreamFactory, PipeToken pipeToken, IWrapperConfig wrapperConfig)
         {
             Raise.ArgumentNullException.IfIsNull(formatter, nameof(formatter));
             Raise.ArgumentNullException.IfIsNull(wrapperProcessStarter, nameof(wrapperProcessStarter));
@@ -51,7 +51,7 @@ namespace LegacyWrapperClient.Transport
 
         public CallResult ReceiveCallResponse()
         {
-            CallResult callResult = (CallResult)_formatter.Deserialize(_pipe);
+            CallResult callResult = _formatter.Deserialize<CallResult>(_pipe);
 
             if (callResult.Exception != null)
             {

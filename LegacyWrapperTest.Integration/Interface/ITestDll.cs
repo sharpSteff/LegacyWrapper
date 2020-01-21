@@ -25,10 +25,10 @@ namespace LegacyWrapperTest.Integration.Interface
     public interface ITestDll : IDisposable
     {
         [LegacyDllMethod(CallingConvention = CallingConvention.StdCall)]
-        int TestStdCall(int AParam);
+        UInt32 TestStdCall(UInt32 AParam);
 
         [LegacyDllMethod(CallingConvention = CallingConvention.StdCall)]
-        int TestNormalFunc(int AParam);
+        UInt32 TestNormalFunc(UInt32 AParam);
 
         [LegacyDllMethod(CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
         string TestPCharHandling(string AParam);
@@ -39,10 +39,10 @@ namespace LegacyWrapperTest.Integration.Interface
         // These procedures are expected to increment their parameters by 1:
 
         [LegacyDllMethod(CallingConvention = CallingConvention.StdCall)]
-        void TestVarParamHandling(ref int AParam);
+        void TestVarParamHandling(ref UInt32 AParam);
 
         [LegacyDllMethod(CallingConvention = CallingConvention.StdCall)]
-        void TestMultipleVarParamsHandling(ref int AParam1, ref int AParam2);
+        void TestMultipleVarParamsHandling(ref UInt32 AParam1, ref UInt32 AParam2);
 
         /// <summary>
         /// This Method exists to test how the WrapperClient handles a non existent library.

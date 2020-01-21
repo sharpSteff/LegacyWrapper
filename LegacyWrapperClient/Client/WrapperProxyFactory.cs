@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Castle.DynamicProxy;
+using LegacyWrapper.Common.Serialization;
 using LegacyWrapper.Common.Token;
 using LegacyWrapperClient.Configuration;
 using LegacyWrapperClient.DynamicProxy;
@@ -28,6 +29,7 @@ namespace LegacyWrapperClient.Client
             InjectionKernel = new StandardKernel();
 
             InjectionKernel.Bind<IFormatter>().To<BinaryFormatter>();
+            InjectionKernel.Bind<ICallFormatter>().To<JsonCallFormatter>();
             InjectionKernel.Bind<IInterceptor>().To<WrapperClientInterceptor>();
             InjectionKernel.Bind<IPipeConnector>().To<PipeConnector>();
             InjectionKernel.Bind<ITokenGenerator>().To<GuidTokenGenerator>();

@@ -34,6 +34,9 @@
     <DocumentationFile>bin\Release\LegacyWrapper.Common.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PommaLabs.Thrower, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2f204b7110a52060, processorArchitecture=MSIL">
       <HintPath>..\packages\Thrower.4.3.1\lib\net45\PommaLabs.Thrower.dll</HintPath>
     </Reference>
@@ -55,8 +58,11 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Serialization\BinaryCallFormatter.cs" />
     <Compile Include="Serialization\CallData.cs" />
     <Compile Include="Serialization\CallResult.cs" />
+    <Compile Include="Serialization\ICallFormatter.cs" />
+    <Compile Include="Serialization\JsonCallFormatter.cs" />
     <Compile Include="Token\PipeToken.cs" />
   </ItemGroup>
   <ItemGroup>

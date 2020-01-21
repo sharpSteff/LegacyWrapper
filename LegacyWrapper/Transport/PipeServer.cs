@@ -15,12 +15,12 @@ namespace LegacyWrapper.Transport
     {
         private bool _isDisposed = false;
 
-        private readonly IFormatter _formatter;
+        private readonly ICallFormatter _formatter;
         private readonly PipeToken _pipeToken;
 
         private NamedPipeServerStream _pipe;
 
-        public PipeServer(IFormatter formatter, PipeToken pipeToken)
+        public PipeServer(ICallFormatter formatter, PipeToken pipeToken)
         {
             Raise.ArgumentNullException.IfIsNull(formatter);
             Raise.ArgumentNullException.IfIsNull(pipeToken, nameof(pipeToken));
@@ -56,8 +56,8 @@ namespace LegacyWrapper.Transport
 
         public CallData ReceiveCallRequest()
         {
-            CallData callData = (CallData)_formatter.Deserialize(_pipe);
-
+            CallData callData = _formatter.Deserialize<CallData>(_pipe);
+            ValidateParameters(callData);
             return callData;
         }
 
@@ -91,6 +91,38 @@ namespace LegacyWrapper.Transport
             _isDisposed = true;
         }
         #endregion
+
+        private static void ValidateParameters(CallData callData)
+        {
+            if (callData != null && callData.Parameters.Any())
+            {
+                for (int i = 0; i < callData.Parameters.Count(); i++)
+                {
+                    if (callData.Parameters[i].GetType() != callData.ParameterTypes[i])
+                    {
+                        if (callData.ParameterTypes[i].BaseType != null)
+                        {
+                            var convertedValue = Convert.ChangeType(callData.Parameters[i], callData.ParameterTypes[i]);
+                            callData.Parameters[i] = convertedValue;
+                        }
+                        else
+                        {
+                            // change type... just a thing for reference integer e.g. Uint32& 
+                            try
+                            {
+                                var nativeType = callData.ParameterTypes[i].FullName.Trim('&');
+                                var convertedValue = Convert.ChangeType(callData.Parameters[i], Type.GetType(nativeType));
+                                callData.Parameters[i] = convertedValue;
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

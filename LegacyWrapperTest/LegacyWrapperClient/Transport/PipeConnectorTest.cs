@@ -32,7 +32,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
         [TestMethod]
         public void TestPipeConnectorOpensPipe()
         {
-            Mock<IFormatter> formatterMock = new Mock<IFormatter>();
+            Mock<ICallFormatter> formatterMock = new Mock<ICallFormatter>();
             Mock<IWrapperProcessStarter> wrapperProcessStarterMock = new Mock<IWrapperProcessStarter>();
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
@@ -49,7 +49,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
         [TestMethod]
         public void TestPipeConnectorSendsCallRequest()
         {
-            Mock<IFormatter> formatterMock = new Mock<IFormatter>();
+            Mock<ICallFormatter> formatterMock = new Mock<ICallFormatter>();
             Mock<IWrapperProcessStarter> wrapperProcessStarterMock = new Mock<IWrapperProcessStarter>();
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
 
@@ -68,9 +68,9 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
         {
             CallResult callResultToFetch = new CallResult();
 
-            Mock<IFormatter> formatterMock = new Mock<IFormatter>();
+            Mock<ICallFormatter> formatterMock = new Mock<ICallFormatter>();
             formatterMock
-                .Setup(x => x.Deserialize(It.IsAny<Stream>()))
+                .Setup(x => x.Deserialize<CallResult>(It.IsAny<PipeStream>()))
                 .Returns(callResultToFetch);
             Mock<IWrapperProcessStarter> wrapperProcessStarterMock = new Mock<IWrapperProcessStarter>();
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
@@ -81,7 +81,7 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
 
             CallResult actualCallResult = pipeConnector.ReceiveCallResponse();
 
-            formatterMock.Verify(mock => mock.Deserialize(It.IsAny<PipeStream>()), Times.AtLeast(1));
+            formatterMock.Verify(mock => mock.Deserialize<CallResult>(It.IsAny<PipeStream>()), Times.AtLeast(1));
             Assert.AreEqual(callResultToFetch, actualCallResult);
         }
 
@@ -91,9 +91,9 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
             CallResult callResultToFetch = new CallResult();
             callResultToFetch.Exception = new LegacyWrapperException();
 
-            Mock<IFormatter> formatterMock = new Mock<IFormatter>();
+            Mock<ICallFormatter> formatterMock = new Mock<ICallFormatter>();
             formatterMock
-                .Setup(x => x.Deserialize(It.IsAny<Stream>()))
+                .Setup(x => x.Deserialize<CallResult>(It.IsAny<PipeStream>()))
                 .Returns(callResultToFetch);
             Mock<IWrapperProcessStarter> wrapperProcessStarterMock = new Mock<IWrapperProcessStarter>();
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();
@@ -112,9 +112,9 @@ namespace LegacyWrapperTest.LegacyWrapperClient.Transport
         {
             CallResult callResultToFetch = new CallResult();
 
-            Mock<IFormatter> formatterMock = new Mock<IFormatter>();
+            Mock<ICallFormatter> formatterMock = new Mock<ICallFormatter>();
             formatterMock
-                .Setup(x => x.Deserialize(It.IsAny<Stream>()))
+                .Setup(x => x.Deserialize<CallResult>(It.IsAny<PipeStream>()))
                 .Returns(callResultToFetch);
             Mock<IWrapperProcessStarter> wrapperProcessStarterMock = new Mock<IWrapperProcessStarter>();
             Mock<PipeStreamFactory> pipeStreamFactoryMock = GetPipeStreamFactoryMock();

@@ -43,7 +43,7 @@ namespace LegacyWrapperClient.Client
         {
             string errorMessage = "Returned parameters differ in length from passed parameters";
             Raise.InvalidDataException.If(callData.Parameters.Length != callResult.Parameters.Length, errorMessage);
-
+            ValidateParameters(callData, callResult);
             Array.Copy(callResult.Parameters, callData.Parameters, callResult.Parameters.Length);
         }
 
@@ -77,5 +77,46 @@ namespace LegacyWrapperClient.Client
         }
         #endregion
 
+
+        private static void ValidateParameters(CallData callData, CallResult callResult)
+        {
+            if (callResult.Result != null && callData.ReturnType != callResult.Result.GetType())
+            {
+                if (callData.ReturnType.BaseType != null)
+                {
+                    var convertedValue = Convert.ChangeType(callResult.Result, callData.ReturnType);
+                    callResult.Result = convertedValue;
+                }
+            }
+
+            if (callData != null && callData.Parameters.Any())
+            {
+                for (int i = 0; i < callData.Parameters.Count(); i++)
+                {
+                    if (callResult.Parameters[i].GetType() != callData.ParameterTypes[i])
+                    {
+                        if (callData.ParameterTypes[i].BaseType != null)
+                        {
+                            var convertedValue = Convert.ChangeType(callResult.Parameters[i], callData.ParameterTypes[i]);
+                            callResult.Parameters[i] = convertedValue;
+                        }
+                        else
+                        {
+                            // change type... just a thing for reference integer e.g. Uint32& 
+                            try
+                            {
+                                var nativeType = callData.ParameterTypes[i].FullName.Trim('&');
+                                var convertedValue = Convert.ChangeType(callResult.Parameters[i], Type.GetType(nativeType));
+                                callResult.Parameters[i] = convertedValue;
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using LegacyWrapper.Common.Serialization;
 using LegacyWrapper.Common.Token;
 using LegacyWrapper.Transport;
 using Ninject;
@@ -21,6 +22,7 @@ namespace LegacyWrapper.Handler
             InjectionKernel = new StandardKernel();
 
             InjectionKernel.Bind<IFormatter>().To<BinaryFormatter>();
+            InjectionKernel.Bind<ICallFormatter>().To<JsonCallFormatter>();
             InjectionKernel.Bind<ICallRequestHandler>().To<CallRequestHandler>();
             InjectionKernel.Bind<IPipeServer>().To<PipeServer>();
         }

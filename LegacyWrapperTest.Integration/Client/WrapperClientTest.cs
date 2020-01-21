@@ -40,9 +40,9 @@ namespace LegacyWrapperTest.Integration.Client
                 .TargetArchitecture(ArchitectureToLoad)
                 .Build();
 
-            int input = 5;
+            UInt32 input = 5;
 
-            int result;
+            UInt32 result;
 
             using (var client = WrapperProxyFactory<ITestDll>.GetInstance(configuration))
             {
@@ -59,9 +59,9 @@ namespace LegacyWrapperTest.Integration.Client
                 .TargetArchitecture(ArchitectureToLoad)
                 .Build();
 
-            int input = 5;
+            UInt32 input = 5;
 
-            int result;
+            UInt32 result;
 
             using (var client = WrapperProxyFactory<ITestDll>.GetInstance(configuration))
             {
@@ -116,14 +116,14 @@ namespace LegacyWrapperTest.Integration.Client
                 .TargetArchitecture(ArchitectureToLoad)
                 .Build();
 
-            int parameter = 1337;
+            UInt32 parameter = 1337;
             using (var client = WrapperProxyFactory<ITestDll>.GetInstance(configuration))
             {
                 client.TestVarParamHandling(ref parameter);
             }
 
             // Ref param should be incremented by 1
-            Assert.AreEqual(1338, parameter);
+            Assert.AreEqual((UInt32)1338, parameter);
         }
 
         [TestMethod]
@@ -133,8 +133,8 @@ namespace LegacyWrapperTest.Integration.Client
                 .TargetArchitecture(ArchitectureToLoad)
                 .Build();
 
-            int param1 = 1337;
-            int param2 = 7777;
+            UInt32 param1 = 1337;
+            UInt32 param2 = 7777;
 
             using (var client = WrapperProxyFactory<ITestDll>.GetInstance(configuration))
             {
@@ -142,8 +142,8 @@ namespace LegacyWrapperTest.Integration.Client
             }
 
             // Ref param should be incremented by 1
-            Assert.AreEqual(1338, param1);
-            Assert.AreEqual(7778, param2);
+            Assert.AreEqual((UInt32)1338, param1);
+            Assert.AreEqual((UInt32)7778, param2);
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace LegacyWrapperTest.Integration.Client
                 .TargetArchitecture(ArchitectureToLoad)
                 .Build();
 
-            int parameter = 1337;
+            UInt32 parameter = 1337;
 
             using (var client = WrapperProxyFactory<ITestDll>.GetInstance(configuration))
             {
@@ -162,7 +162,7 @@ namespace LegacyWrapperTest.Integration.Client
             }
 
             // Ref param should be incremented by 1
-            Assert.AreEqual(1339, parameter);
+            Assert.AreEqual((UInt32)1339, parameter);
         }
 
         
