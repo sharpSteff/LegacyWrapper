@@ -13,7 +13,7 @@ namespace LegacyWrapperClient.Transport
     {
         private const string LocalPipeUrl = ".";
 
-        public virtual PipeStream GetConnectedPipeStream(PipeToken pipeToken, int timeout)
+        public virtual PipeStream GetConnectedPipeStream(PipeToken pipeToken, int timeout = System.Threading.Timeout.Infinite)
         {
             if (timeout == 0)
             {

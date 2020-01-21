@@ -55,7 +55,7 @@ namespace LegacyWrapperClient.Configuration
         /// </summary>
         /// <param name="workingdir">the working directory</param>
         /// <returns>Returns the same instance of WrapperConfigBuilder.</returns>
-        public WrapperConfigBuilder WirkingDirectory(string workingdir)
+        public WrapperConfigBuilder WorkingDirectory(string workingdir)
         {
             _configuration.WorkingDirectory = workingdir;
             return this;
